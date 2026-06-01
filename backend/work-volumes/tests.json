@@ -1,0 +1,19 @@
+{
+  "tests": [
+    {
+      "name": "List without auth — 401",
+      "method": "GET",
+      "path": "/?action=list",
+      "expectedStatus": 401,
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Add without auth — 401",
+      "method": "POST",
+      "path": "/?action=add",
+      "body": {},
+      "expectedStatus": 401,
+      "bodyMatcher": "partial"
+    }
+  ]
+}

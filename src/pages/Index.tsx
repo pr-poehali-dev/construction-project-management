@@ -2,6 +2,8 @@ import { useState } from "react";
 import Icon from "@/components/ui/icon";
 import type { User } from "@/lib/auth";
 import AdminUsers from "./AdminUsers";
+import PhotoAlbum from "./PhotoAlbum";
+import WorkVolumes from "./WorkVolumes";
 
 type Role = "foreman" | "engineer" | "admin";
 type Section =
@@ -14,7 +16,9 @@ type Section =
   | "warehouse"
   | "safety"
   | "analytics"
-  | "users";
+  | "users"
+  | "album"
+  | "volumes";
 
 interface Worker {
   id: number;
@@ -110,6 +114,8 @@ export default function Index({ user, onLogout }: Props) {
       ? [
           { key: "dashboard", label: "Главная", icon: "LayoutDashboard" },
           { key: "users", label: "Пользователи", icon: "UsersRound" },
+          { key: "album", label: "Фотоальбом", icon: "Images" },
+          { key: "volumes", label: "Объёмы работ", icon: "FileSpreadsheet" },
           { key: "approvals", label: "Согласования", icon: "MessageSquare" },
           { key: "analytics", label: "Аналитика", icon: "BarChart3" },
         ]
@@ -118,14 +124,18 @@ export default function Index({ user, onLogout }: Props) {
           { key: "dashboard", label: "Главная", icon: "LayoutDashboard" },
           { key: "attendance", label: "Табель", icon: "Users" },
           { key: "workplan", label: "План работ", icon: "ClipboardList" },
-          { key: "docs", label: "Документация", icon: "FolderOpen" },
+          { key: "volumes", label: "Объёмы работ", icon: "FileSpreadsheet" },
+          { key: "album", label: "Фотоальбом", icon: "Images" },
           { key: "report", label: "Отчёт дня", icon: "FileText" },
           { key: "approvals", label: "Согласования", icon: "MessageSquare" },
           { key: "warehouse", label: "Склад", icon: "Package" },
           { key: "safety", label: "Охрана труда", icon: "ShieldAlert" },
+          { key: "docs", label: "Документация", icon: "FolderOpen" },
         ]
       : [
           { key: "dashboard", label: "Главная", icon: "LayoutDashboard" },
+          { key: "album", label: "Фотоальбом", icon: "Images" },
+          { key: "volumes", label: "Объёмы работ", icon: "FileSpreadsheet" },
           { key: "approvals", label: "Согласования", icon: "MessageSquare" },
           { key: "analytics", label: "Аналитика", icon: "BarChart3" },
         ];
@@ -300,6 +310,40 @@ export default function Index({ user, onLogout }: Props) {
                   </div>
                 </div>
               )}
+
+              {/* Quick links: album + volumes (all roles) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <button
+                  onClick={() => setSection("album")}
+                  className="bg-[#13151c] border border-white/5 hover:border-orange-500/30 rounded-2xl p-4 flex items-center justify-between transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-orange-500/15 flex items-center justify-center">
+                      <Icon name="Images" size={18} className="text-orange-400" />
+                    </div>
+                    <div className="text-left">
+                      <div className="text-sm font-semibold">Фотоальбом</div>
+                      <div className="text-xs text-white/40">Фото с объекта по категориям</div>
+                    </div>
+                  </div>
+                  <Icon name="ChevronRight" size={16} className="text-white/20 group-hover:text-orange-400 transition-all" />
+                </button>
+                <button
+                  onClick={() => setSection("volumes")}
+                  className="bg-[#13151c] border border-white/5 hover:border-green-500/30 rounded-2xl p-4 flex items-center justify-between transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-green-500/15 flex items-center justify-center">
+                      <Icon name="FileSpreadsheet" size={18} className="text-green-400" />
+                    </div>
+                    <div className="text-left">
+                      <div className="text-sm font-semibold">Объёмы работ</div>
+                      <div className="text-xs text-white/40">Нарастающий итог + экспорт Excel</div>
+                    </div>
+                  </div>
+                  <Icon name="ChevronRight" size={16} className="text-white/20 group-hover:text-green-400 transition-all" />
+                </button>
+              </div>
 
               {role === "admin" && (
                 <button
@@ -875,6 +919,16 @@ export default function Index({ user, onLogout }: Props) {
           {/* USERS (admin only) */}
           {section === "users" && (
             <AdminUsers currentUserId={user.id} />
+          )}
+
+          {/* PHOTO ALBUM */}
+          {section === "album" && (
+            <PhotoAlbum />
+          )}
+
+          {/* WORK VOLUMES */}
+          {section === "volumes" && (
+            <WorkVolumes />
           )}
 
         </main>

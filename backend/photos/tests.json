@@ -1,0 +1,19 @@
+{
+  "tests": [
+    {
+      "name": "List photos without auth — 401",
+      "method": "GET",
+      "path": "/?action=list",
+      "expectedStatus": 401,
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Upload without auth — 401",
+      "method": "POST",
+      "path": "/?action=upload",
+      "body": {},
+      "expectedStatus": 401,
+      "bodyMatcher": "partial"
+    }
+  ]
+}
