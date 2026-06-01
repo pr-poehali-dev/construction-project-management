@@ -5,7 +5,7 @@
       "method": "POST",
       "path": "/",
       "expectedStatus": 200,
-      "expectedBody": {"skipped": ["+79001112233", "+79002223344", "+79003334455"]},
+      "expectedBody": {"created": [], "skipped": ["+79001112233", "+79002223344", "+79003334455", "+79000000000"]},
       "bodyMatcher": "partial"
     }
   ]

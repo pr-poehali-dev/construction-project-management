@@ -1,8 +1,9 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 import type { User } from "@/lib/auth";
+import AdminUsers from "./AdminUsers";
 
-type Role = "foreman" | "engineer";
+type Role = "foreman" | "engineer" | "admin";
 type Section =
   | "dashboard"
   | "attendance"
@@ -12,7 +13,8 @@ type Section =
   | "approvals"
   | "warehouse"
   | "safety"
-  | "analytics";
+  | "analytics"
+  | "users";
 
 interface Worker {
   id: number;
@@ -104,7 +106,14 @@ export default function Index({ user, onLogout }: Props) {
   };
 
   const navItems =
-    role === "foreman"
+    role === "admin"
+      ? [
+          { key: "dashboard", label: "Главная", icon: "LayoutDashboard" },
+          { key: "users", label: "Пользователи", icon: "UsersRound" },
+          { key: "approvals", label: "Согласования", icon: "MessageSquare" },
+          { key: "analytics", label: "Аналитика", icon: "BarChart3" },
+        ]
+      : role === "foreman"
       ? [
           { key: "dashboard", label: "Главная", icon: "LayoutDashboard" },
           { key: "attendance", label: "Табель", icon: "Users" },
@@ -223,7 +232,7 @@ export default function Index({ user, onLogout }: Props) {
               <div>
                 <div className="text-xs text-white/30 uppercase tracking-widest mb-1">Понедельник, 2 июня 2026</div>
                 <h1 className="text-xl font-bold">
-                  {role === "foreman" ? `Добро пожаловать, ${user.name.split(" ")[0]}` : "Панель инженера"}
+                  {role === "admin" ? `Администратор: ${user.name.split(" ")[0]}` : role === "foreman" ? `Добро пожаловать, ${user.name.split(" ")[0]}` : "Панель инженера"}
                 </h1>
               </div>
 
@@ -290,6 +299,24 @@ export default function Index({ user, onLogout }: Props) {
                     </button>
                   </div>
                 </div>
+              )}
+
+              {role === "admin" && (
+                <button
+                  onClick={() => setSection("users")}
+                  className="w-full bg-[#13151c] border border-white/5 hover:border-purple-500/30 rounded-2xl p-4 flex items-center justify-between transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-purple-500/15 flex items-center justify-center">
+                      <Icon name="UsersRound" size={18} className="text-purple-400" />
+                    </div>
+                    <div className="text-left">
+                      <div className="text-sm font-semibold">Управление пользователями</div>
+                      <div className="text-xs text-white/40">Создание, редактирование, удаление аккаунтов</div>
+                    </div>
+                  </div>
+                  <Icon name="ChevronRight" size={16} className="text-white/20 group-hover:text-purple-400 transition-all" />
+                </button>
               )}
             </div>
           )}
@@ -843,6 +870,11 @@ export default function Index({ user, onLogout }: Props) {
                 ))}
               </div>
             </div>
+          )}
+
+          {/* USERS (admin only) */}
+          {section === "users" && (
+            <AdminUsers currentUserId={user.id} />
           )}
 
         </main>

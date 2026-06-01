@@ -16,6 +16,7 @@ DEMO_USERS = [
     {"name": "Смирнов В.А.", "phone": "+79001112233", "password": "1234", "role": "foreman"},
     {"name": "Коваль И.Р.", "phone": "+79002223344", "password": "1234", "role": "foreman"},
     {"name": "Ковалёв Д.С.", "phone": "+79003334455", "password": "1234", "role": "engineer"},
+    {"name": "Администратор", "phone": "+79000000000", "password": "admin1234", "role": "admin"},
 ]
 
 

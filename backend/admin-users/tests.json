@@ -1,0 +1,19 @@
+{
+  "tests": [
+    {
+      "name": "List users without token — 403",
+      "method": "GET",
+      "path": "/?action=list",
+      "expectedStatus": 403,
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Create user without token — 403",
+      "method": "POST",
+      "path": "/?action=create",
+      "body": {"name": "Test", "phone": "+70000000000", "password": "1234", "role": "foreman"},
+      "expectedStatus": 403,
+      "bodyMatcher": "partial"
+    }
+  ]
+}
