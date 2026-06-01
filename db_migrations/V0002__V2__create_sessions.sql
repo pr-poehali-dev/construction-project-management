@@ -1,0 +1,1 @@
+CREATE TABLE t_p29757712_construction_project.sessions (id SERIAL PRIMARY KEY, token VARCHAR(64) UNIQUE NOT NULL, user_id INTEGER NOT NULL, created_at TIMESTAMPTZ DEFAULT NOW(), expires_at TIMESTAMPTZ DEFAULT NOW() + INTERVAL '30 days');

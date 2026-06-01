@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
+import type { User } from "@/lib/auth";
 
 type Role = "foreman" | "engineer";
 type Section =
@@ -79,8 +80,13 @@ const analyticsProjects = [
   { name: "БЦ «Горизонт»", attendance: 100, planDone: 88, violations: 1, status: "active" },
 ];
 
-export default function Index() {
-  const [role, setRole] = useState<Role>("foreman");
+interface Props {
+  user: User;
+  onLogout: () => void;
+}
+
+export default function Index({ user, onLogout }: Props) {
+  const role = user.role as Role;
   const [section, setSection] = useState<Section>("dashboard");
   const [workerList, setWorkerList] = useState(initialWorkers);
   const [approvalList, setApprovalList] = useState(initialApprovals);
@@ -129,17 +135,21 @@ export default function Index() {
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <div className="hidden sm:flex items-center gap-2 mr-1">
+            <div className="w-7 h-7 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 text-xs font-bold">
+              {user.name[0]}
+            </div>
+            <div className="text-right">
+              <div className="text-xs font-medium leading-none">{user.name}</div>
+              <div className="text-[10px] text-white/30 mt-0.5">{role === "engineer" ? "Инженер" : "Прораб"}</div>
+            </div>
+          </div>
           <button
-            onClick={() => { setRole("foreman"); setSection("dashboard"); }}
-            className={`text-xs px-3 py-1.5 rounded-lg transition-all ${role === "foreman" ? "bg-orange-500 text-white" : "bg-white/5 text-white/50 hover:bg-white/10"}`}
+            onClick={onLogout}
+            className="text-xs px-3 py-1.5 rounded-lg bg-white/5 text-white/50 hover:bg-white/10 hover:text-white transition-all flex items-center gap-1"
           >
-            Прораб
-          </button>
-          <button
-            onClick={() => { setRole("engineer"); setSection("dashboard"); }}
-            className={`text-xs px-3 py-1.5 rounded-lg transition-all ${role === "engineer" ? "bg-orange-500 text-white" : "bg-white/5 text-white/50 hover:bg-white/10"}`}
-          >
-            Инженер
+            <Icon name="LogOut" size={13} />
+            <span className="hidden sm:inline">Выйти</span>
           </button>
         </div>
       </header>
@@ -170,12 +180,15 @@ export default function Index() {
           <div className="mt-auto pt-3 border-t border-white/5">
             <div className="flex items-center gap-2 px-3 py-2">
               <div className="w-7 h-7 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 text-xs font-bold">
-                {role === "foreman" ? "С" : "И"}
+                {user.name[0]}
               </div>
-              <div>
-                <div className="text-xs font-medium">{role === "foreman" ? "Смирнов В.А." : "Инж. Ковалёв"}</div>
+              <div className="flex-1 min-w-0">
+                <div className="text-xs font-medium truncate">{user.name}</div>
                 <div className="text-[10px] text-white/30">{role === "foreman" ? "Прораб" : "Инженер"}</div>
               </div>
+              <button onClick={onLogout} className="text-white/20 hover:text-white/60 transition-all">
+                <Icon name="LogOut" size={14} />
+              </button>
             </div>
           </div>
         </nav>
@@ -210,7 +223,7 @@ export default function Index() {
               <div>
                 <div className="text-xs text-white/30 uppercase tracking-widest mb-1">Понедельник, 2 июня 2026</div>
                 <h1 className="text-xl font-bold">
-                  {role === "foreman" ? "Добро пожаловать, Смирнов" : "Панель инженера"}
+                  {role === "foreman" ? `Добро пожаловать, ${user.name.split(" ")[0]}` : "Панель инженера"}
                 </h1>
               </div>
 

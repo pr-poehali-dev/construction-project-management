@@ -1,0 +1,12 @@
+{
+  "tests": [
+    {
+      "name": "Seed demo users",
+      "method": "POST",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"skipped": ["+79001112233", "+79002223344", "+79003334455"]},
+      "bodyMatcher": "partial"
+    }
+  ]
+}
